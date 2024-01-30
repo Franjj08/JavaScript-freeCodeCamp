@@ -1,20 +1,72 @@
-let firstCard = 11
-let secondCard = 10
 let hasBalckJack = false
-let isAlive = true
+let isAlive = false
 let message = ""
+let cards = []
 
-let sum = firstCard + secondCard
+let sum = 0
 
-if (sum <= 20) {
-    message = "Do you want to draw a new card?"
-} else if (sum === 21){
-    message = "Wohoo! You've got Blacjack"
-    hasBalckJack = true
-} else{
-    message = "You're out of the game!"
-    isAlive = false
+let messsageEl = document.getElementById("message-el")
+//let sumEl = document.getElementById("sum-el")
+let sumEl = document.querySelector("#sum-el")//More specific for id # / class.
+let cardsEl = document.getElementById("cards-el")
+
+let player = {
+    name :"Per",
+    chips: 200
 }
+
+let playerEl = document.getElementById("player-el")
+playerEl.textContent = player.name + ": $" +player.chips 
+
+function getRandomCard() {
+    let randomNumber = Math.floor(Math.random()*13) +1 
+    if(randomNumber> 10) {
+        return 10
+    } else if (randomNumber === 1) {
+        return 11
+    } else {
+        return randomNumber
+    }
+}
+
+function startGame() {
+    isAlive = true
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards = [firstCard, secondCard]
+    sum = firstCard +secondCard
+    renderGame()
+}
+
+function renderGame() {
+    cardsEl.textContent = "Cards: " 
+    for(let i = 0; i <cards.length; i++ ) {
+        cardsEl.textContent += cards[i] + " "
+    }
+    sumEl.textContent = "Sum: " + sum 
+    if (sum <= 20) {
+        message = "Do you want to draw a new card?"
+    } else if (sum === 21){
+        message = "Wohoo! You've got Blackjack"
+        hasBalckJack = true
+    } else{
+        message = "You're out of the game!"
+        isAlive = false
+    }
+    messsageEl.textContent = message
+
+}
+
+function newCard() {
+    if ( isAlive === true && hasBalckJack === false) {
+        let card = getRandomCard()
+        sum += card
+        cards.push(card)
+        console.log(cards)
+        renderGame()
+    }
+    
+}
+
 // when we use == it works in case of 100 =="100"
 // When we use == ir doesn't work in 100 === "100"
-console.log(message)
